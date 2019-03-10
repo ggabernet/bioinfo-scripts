@@ -16,9 +16,10 @@ codes = [line.rstrip() for line in lines]
 
 for sample in codes:
     subprocess.call("mkdir %s" % sample, shell=True, stdout=True)
-    subprocess.Popen("mv %s* %s" % (sample, sample), shell=True, stdout=True)
-    subprocess.Popen("find %s -name '*%s*.fastq.gz' -exec cat {} ';' > %s/%s_R1_.fastq.gz" % (sample, args.patternR1, sample, sample), shell=True, stdout=True)
-    subprocess.Popen("find %s -name '*%s*.fastq.gz' -exec cat {} ';' > %s/%s_R2_.fastq.gz" % (sample, args.patternR2, sample, sample), shell=True, stdout=True)
+    subprocess.Popen("mv %s*.fastq.gz %s" % (sample, sample), shell=True, stdout=True)
+    subprocess.Popen("mv %s*.fastq.gz.* %s" % (sample, sample), shell=True, stdout=True)
+    subprocess.Popen("find %s -type f -name '*%s*.fastq.gz' -print0 | sort -z | xargs -0 cat > %s/%s_R1.fastq.gz" % (sample, args.patternR1, sample, sample), shell=True, stdout=True)
+    subprocess.Popen("find %s -type f -name '*%s*.fastq.gz' -print0 | sort -z | xargs -0 cat > %s/%s_R2.fastq.gz" % (sample, args.patternR2, sample, sample), shell=True, stdout=True)
 
 
 
